@@ -1,6 +1,41 @@
 #include "Healer.h"
 
 
-Healer::Healer(int id, int AT, double S, double P, double RP, int d) : Enemy::Enemy(id, HEALER, AT, S, P, RP, d)
+Healer::Healer(int id, double health, int arrTime, double speed, double power, double ReloadPeriod) :Enemy(id, health, HEALER, arrTime, speed, power, ReloadPeriod)
 {
+
+}
+ 
+void Healer::Move() 
+{
+	
+	if (CurrentHealth < 0.5 * Health)
+	{
+		if (Distance <= MinDistance)
+		{
+			Distance += 0.5 * GetSpeed();
+		}
+		else if (Distance >= MaxDistance)
+		{
+			Distance -= 0.5 * GetSpeed();
+		}
+	}
+	else
+	{
+		if (Distance <= MinDistance)
+		{
+			Distance += GetSpeed();
+		}
+		else if (Distance >= MaxDistance)
+		{
+			Distance -=GetSpeed();
+		}
+	}
+}
+
+void Healer::HealEnemy(Enemy* enemy) 
+{
+	if (GetRldTime() != 0)
+		return;
+
 }

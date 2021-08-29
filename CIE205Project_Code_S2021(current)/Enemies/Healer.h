@@ -3,6 +3,9 @@
 class Healer:public Enemy
 {
 public:
-	Healer(int ID, int AT, double S, double P, double RP, int d = MaxDistance);
+	Healer(int id, double health, int arrTime, double speed, double power, double ReloadPeriod);
+
+	void Move() override;
+	void HealEnemy(Enemy* enemy);
 };
 
