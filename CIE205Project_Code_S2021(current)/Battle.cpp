@@ -9,6 +9,11 @@
 using namespace std;
 
 
+int Battle::GetTimeStep()
+{
+	return CurrentTimeStep;
+}
+
 Battle::Battle()
 {	
 	EnemyCount = 0;
@@ -108,17 +113,17 @@ bool Battle::ImportEnemies()
 		switch (type)
 		{
 		case FIGHTER:
-			pE = new Fighter(ID, ArrvTime, Speed, Power, RldPeriod);
+			pE = new Fighter(ID,Health, ArrvTime, Speed, Power, RldPeriod);
 			fighterNum++;
 			EnemyCount++;
 			break;
 		case HEALER:
-			pE = new Healer(ID, ArrvTime, Speed, Power, RldPeriod);
+			pE = new Healer(ID,Health, ArrvTime, Speed, Power, RldPeriod);
 			healerNum++;
 			EnemyCount++;
 			break;
 		case FREEZER:
-			pE = new Freezer(ID, ArrvTime, Speed, Power, RldPeriod);
+			pE = new Freezer(ID,Health, ArrvTime, Speed, Power, RldPeriod);
 			freezerNum++;
 			EnemyCount++;
 		};
@@ -298,4 +303,5 @@ void Battle
 //		temp.enqueue(pE);
 //	}
 //	while (temp.dequeue(pE))Q_Healer.enqueue(pE);
-//}
+//}	
+;

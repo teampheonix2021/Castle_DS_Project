@@ -15,7 +15,7 @@ private:
 	Castle BCastle;
 	int EnemyCount;	//the actual number of enemies in the game
 	int ActiveCount, FrostedCount, KilledCount;	//no. of enemies (Active, Frosted, killed so far)
-	int CurrentTimeStep;
+	static int CurrentTimeStep;
 	int NumEnmy;
 	int fighterNum = 0;
 	int freezerNum = 0;
@@ -33,7 +33,8 @@ private:
 	ArrayStack<Healer*> S_Healer;
 
 public:
-	
+	//getters
+	static int GetTimeStep();
 	Battle();
 	void AddAllListsToDrawingList();		//Add enemy lists (inactive, active,.....) to drawing list to be displayed on user interface
 	Castle * GetCastle();
