@@ -1,7 +1,6 @@
 #pragma once
 #include "..\Defs.h"
 #include "../Enemies/Healer.h"
-#include "../Enemies/Fighter.h"
 #include <time.h>
 
 

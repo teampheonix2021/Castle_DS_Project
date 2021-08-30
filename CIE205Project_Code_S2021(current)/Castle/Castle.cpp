@@ -61,7 +61,7 @@ bool Castle::attack(Enemy* enemy)
 			int K = 0;
 			if (Frozen == true)
 			{
-				return;
+				return false;
 			}
 
 			if (healer != nullptr)

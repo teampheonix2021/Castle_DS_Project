@@ -1,6 +1,9 @@
 #pragma once
 
 #include "Enemies/Enemy.h"
+#include "Enemies/Fighter.h"
+#include "Enemies/Healer.h"
+#include "Enemies/Freezer.h"
 #include "Castle\Castle.h"
 #include "Generic_DS\Queue.h"
 #include "Generic_DS/PriorityQueue.h"
@@ -40,8 +43,7 @@ private:
 	PriorityQueue<Fighter*> Q_Fighter;
 	Queue<Freezer*> Q_Freezer;
 	ArrayStack<Healer*> S_Healer;
-	Queue<Enemy*> Q_Killed;						//Queue of killed Enemies
-	Queue<Enemy*> Q_Active;
+
 public:
 	//getters
 	static int GetTimeStep();
@@ -51,7 +53,7 @@ public:
 	void RunSimulation();
 	void ActivateEnemies();		//check the inactive list and activate all enemies that has arrived
 	bool ImportEnemies();		//Import enemies from a text file
-	void Execute();
+	//void Execute();
 	GAME_STATUS Battleaction();
 
 	//void phase1();

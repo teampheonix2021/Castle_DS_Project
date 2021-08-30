@@ -45,7 +45,6 @@ public:
 	ENMY_TYPE GetType() const;
 	int GetDistance() const;
 	int GetArrvTime() const;
-	int GetDistance() const;
 	int GetHealth() const;
 	int GetRldTime() const;
 	int GetSpeed() const;
