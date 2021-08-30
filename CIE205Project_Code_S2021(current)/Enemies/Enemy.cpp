@@ -127,7 +127,7 @@ bool Enemy::BeDamaged(double Damage)
 		return false; //Still alive
 }
 
-void Enemy::BeHeal(double Heal)
+void Enemy::BeHealed(double Heal)
 {
 	CurrentHealth += Heal;
 }

@@ -3,6 +3,7 @@
 #include "..\Defs.h"
 #include "..\CMUgraphicsLib\CMUgraphics.h"
 
+
 class GUI;
 // Enemy is the base class of each type of enemy
 // Enemy should be an abstract class in next phases
@@ -63,7 +64,7 @@ public:
 	//functions
 	bool BeFrosted(double Frost); //Returns true when frosted
 	bool BeDamaged(double Damage); //Returns true in case of enemy's death
-	void BeHeal(double heal);
+	void BeHealed(double heal);
 	void DecrementDist();
 	bool ReduceFrostedTime();
 	void Melt();
@@ -77,6 +78,6 @@ public:
 	// Virtual Functions: ----------------
 
 	virtual void Move() = 0;	//All enemies can move
-	//virtual void Act() = 0;	//Acting means fighting or healing
+	
 
 };
