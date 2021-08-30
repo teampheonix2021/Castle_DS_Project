@@ -1,16 +1,22 @@
 #include "Enemy.h"
+#include "../Battle.h"
 #include<iostream>
 using namespace std;
-Enemy::Enemy()
-{
-	SetDistance(MaxDistance);
-	SetStatus(INAC);
-}
+//Enemy::Enemy()
+//{
+//	SetDistance(MaxDistance);
+//	SetStatus(INAC);
+//}
 
-Enemy::Enemy(int id, ENMY_TYPE t, int arrTime, double s, double p, double RP, int d):ID(id),ArrvTime(arrTime),Type(t),Speed(s),Power(p),RldPeriod(RP)
+Enemy::Enemy(int id, double health,ENMY_TYPE type, int arrTime, double speed, double power, double ReloadPeriod, int distance)
+	:ID(id),Health(health),ArrvTime(arrTime),Type(type),Speed(speed),Power(power),RldPeriod(ReloadPeriod),Distance(distance)
+	, FrostThreshold(0.3*Health), FrostedTime(RldPeriod)
 {
-	SetDistance(d);
 	SetStatus(INAC);
+	EndReload = 0;
+	CurrentFrost = 0;
+	TimeToUnfrost = 0;
+	CurrentHealth =health;
 }
 
 
@@ -50,6 +56,28 @@ void Enemy::DecrementDist()
 	}
 }
 
+bool Enemy::ReduceFrostedTime()
+{
+	if (TimeToUnfrost == 0)
+	{
+		if (!IsDead())
+			SetStatus(ACTV);
+		return true;
+	}
+	else
+	{
+		TimeToUnfrost--;
+		return false;
+	}
+}
+
+void Enemy::Melt()
+{
+	if (CurrentFrost == 0)
+		return;
+	CurrentFrost -= 0.1 * (CurrentHealth + Power);
+}
+
 void Enemy::SetDistance(int d)
 {
 	if (d >= MinDistance && d <= MaxDistance)
@@ -58,9 +86,106 @@ void Enemy::SetDistance(int d)
 		Distance = MaxDistance;
 }
 
+void Enemy::setRldTime()
+{
+	EndReload = RldPeriod;
+}
+
+bool Enemy::BeFrosted(double frost)
+{
+	if (FirstShot == 0)
+		FirstShot = Battle::GetTimeStep();
+	
+	else if (CurrentFrost + frost >= FrostThreshold)
+	{
+		CurrentFrost = 0;
+		SetStatus(FRST);
+		return true; //frosted enemy
+	}
+	else
+	{
+		CurrentFrost += frost;
+		return false; //still not frosted
+	}
+}
+
+bool Enemy::BeDamaged(double Damage)
+{
+	CurrentHealth -= Damage;
+	
+	if (FirstShot == 0)
+		FirstShot = Battle::GetTimeStep(); //detecting time of first shot
+	
+	if (CurrentHealth <= 0)
+	{
+		CurrentHealth = 0;
+		SetStatus(KILD);
+		KilledTime = Battle::GetTimeStep();
+		return true; //Dead enemy
+	}
+	else
+		return false; //Still alive
+}
+
+void Enemy::BeHealed(double Heal)
+{
+	CurrentHealth += Heal;
+}
+
+
+
 int Enemy::GetDistance() const
 {
 	return Distance;
+}
+
+int Enemy::GetHealth() const
+{
+	return CurrentHealth;
+}
+
+int Enemy::GetRldTime() const
+{
+	return EndReload;
+}
+
+int Enemy::GetSpeed() const
+{
+	if (CurrentFrost >= FrostThreshold)
+		return 0.7 * Speed;
+	else
+		return Speed;
+}
+
+int Enemy::GetKldTime() const
+{
+	return KilledTime;
+}
+
+int Enemy::GetPower() const
+{
+	return Power;
+}
+
+int Enemy::GetfrstShotTime() const
+{
+	return FirstShot;
+}
+
+bool Enemy::IsFrosted() const
+{
+	if (GetStatus() == FRST)
+		return true;
+	else
+		return false;
+}
+
+bool Enemy::IsDead() const
+{
+	if (GetStatus() == KILD)
+		return true;
+	else
+		return false;
 }
 
 
@@ -76,4 +201,27 @@ int Enemy::GetKilledTime()
 ENMY_TYPE Enemy::GetType() const
 {
 	return Type;
+}
+
+
+//void Enemy::settotalice(int x)
+//{
+//	totalice += x;
+//}
+//
+//int Enemy::gettotalice()
+//{
+//	return totalice;
+//}
+
+void Enemy::Reducereloadtime()
+{
+	if (EndReload == 0)
+	{
+		return;
+	}
+	else
+	{
+		EndReload--;
+	}
 }

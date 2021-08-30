@@ -1,13 +1,15 @@
 #pragma once
 #include "Enemy.h"
+#include "../Castle/Castle.h"
 class Fighter:public Enemy
 {
 private:
 	int priority;
 public:
-	Fighter(int ID, int AT, double S, double P, double RP, int d = MaxDistance);
-	int getPriority() 
-	{
-		return (Power*status) - (Distance+Health+RldPeriod);
-	}
+	Fighter(int id, double health, int arrTime, double speed, double power, double ReloadPeriod);
+	
+	int getPriority() const;
+	void Move() override;
+	void AttackCastle(Castle*);
+	
 };

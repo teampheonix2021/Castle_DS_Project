@@ -1,35 +1,14 @@
-# Prerequisites
-*.d
+################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
-/.vs
-/CIE205Project_Code_S2021(current)/Debug
-/CIE205Project_Code_S2021(current)/.vs/CastleDSProject/v16
+*.opendb
+*.db
+*.suo
+.vs/
+CIE205Project_Code_S2021/CastleDSProject.vcxproj
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+Debug/
+x64/

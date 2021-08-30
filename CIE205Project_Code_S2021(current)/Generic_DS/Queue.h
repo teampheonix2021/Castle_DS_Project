@@ -63,6 +63,8 @@ public :
 	const T* toArray(int& count);	//returns array of T (array of items)
 
 
+	int getCount();
+
 	~Queue();
 };
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -223,6 +225,11 @@ const T* Queue<T>::toArray(int& count)
 	//IMPORTANT:
 	//toArray function to be used ONLY when drawing the queue items
 
+
+	int getCount()
+	{
+		return count;
+	}
 }
 
 template <typename T>
