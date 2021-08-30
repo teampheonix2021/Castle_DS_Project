@@ -51,7 +51,7 @@ private :
 	
 	Node<T>* backPtr;
 	Node<T>* frontPtr;
-	int count = 0;
+	int Q_Length = 0;
 public :
 	Queue();	
 	bool isEmpty() const ;
@@ -119,8 +119,7 @@ bool Queue<T>::enqueue( const T& newEntry)
 	else
 		backPtr->setNext(newNodePtr); // The queue was not empty
 	backPtr = newNodePtr; // New node is at back
-
-	count++;
+	Q_Length++;
 	return true ;
 } // end enqueue
 
@@ -151,7 +150,7 @@ bool Queue<T>:: dequeue(T& frntEntry)
 	// Free memory reserved by the dequeued node
 	delete nodeToDeletePtr;
 
-	count--;
+	Q_Length--;
 	return true;
 
 }
@@ -238,4 +237,9 @@ const T* Queue<T>::toArray(int& count)
 	}
 }
 
+template <typename T>
+int Queue<T>::GetLength()
+{
+	return Q_Length;
+}
 #endif

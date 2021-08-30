@@ -6,6 +6,7 @@
 #include <fstream>
 #include <sstream>
 #include<iostream>
+
 using namespace std;
 
 
@@ -50,6 +51,76 @@ void Battle::RunSimulation()
 
 	delete pGUI;
 	
+}
+
+GAME_STATUS Battle::InteractiveMode()
+{
+	int ActiveNumbers, 
+		FrozenNumbers;
+	pGUI->PrintMessage("Start the game");
+	pGUI->waitForClick();
+	CurrentTimeStep = 0;
+	ImportEnemies();
+	AddAllListsToDrawingList();
+	//pGUI->UpdateInterface(CurrentTimeStep, BCastle.GetHealth(), BCastle.isForsted());	
+	GAME_STATUS gameStatus = IN_PROGRESS;
+	while (gameStatus == IN_PROGRESS)
+	{
+		pGUI->waitForClick();
+		CurrentTimeStep++;
+		//gameStatus = runTimeStep();
+		pGUI->ResetDrawingList();
+		AddAllListsToDrawingList();
+		/*FrozenNumbers = FrostedFighter + FrostedFreezer + FrostedHealer;
+		ActiveNumbers = Q_Active.getC() - FrozenNumbers;
+		pGUI->UpdateInterface(CurrentTimeStep, BCastle.GetHealth(), BCastle.IsFrosted(), Q_Killed.getC(),
+			ActiveNumbers, FrozenNumbers, ActiveFighter, ActiveFreezer, ActiveHealer,
+			FrostedFighter, FrostedHealer, FrostedFreezer, KilledFighter, KilledFreezers, KilledHealer);*/
+	}
+	pGUI->waitForClick();
+	return gameStatus;
+}
+GAME_STATUS Battle::StepByStepMode()
+{
+
+	int ActiveNumbers,
+		FrozenNumbers;
+	CurrentTimeStep = 0;
+	ImportEnemies();
+	AddAllListsToDrawingList();
+	//pGUI->UpdateInterface(CurrentTimeStep, BCastle.GetHealth(), BCastle.IsFrosted());	
+	GAME_STATUS gameStatus = IN_PROGRESS;
+	while (gameStatus == IN_PROGRESS)
+	{
+		Sleep(250);
+		CurrentTimeStep++;
+		//gameStatus = runTimeStep();
+		pGUI->ResetDrawingList();
+		AddAllListsToDrawingList();
+		/*FrozenNumbers = FrostedFighter + FrostedFreezer + FrostedHealer;
+		ActiveNumbers = Q_Active.getC() - FrozenNumbers;
+		pGUI->UpdateInterface(CurrentTimeStep, BCastle.GetHealth(), BCastle.IsFrosted(), Q_Killed.getC(),
+			ActiveNumbers, FrozenNumbers, ActiveFighter, ActiveFreezer, ActiveHealer,
+			FrostedFighter, FrostedHealer, FrostedFreezer, KilledFighter, KilledFreezers, KilledHealer);*/
+	}
+
+	pGUI->waitForClick();
+	return gameStatus;
+}
+GAME_STATUS Battle::SilentMode()
+{
+	CurrentTimeStep = 0;
+
+	ImportEnemies();
+	GAME_STATUS gameStatus = IN_PROGRESS;
+	while (gameStatus == IN_PROGRESS)
+	{
+		CurrentTimeStep++;
+		//gameStatus = runTimeStep();
+	}
+
+	pGUI->waitForClick();
+	return gameStatus;
 }
 
 
@@ -134,7 +205,124 @@ bool Battle::ImportEnemies()
 	}
 	return true;
 }
+void Battle::ExportData(GAME_STATUS gameStatus)
+{
+	ofstream fout("Play results.txt");
+	Enemy* EnemyPointer;
+	int TotalKills = Q_Killed.GetLength();
+	int sumFirstShotDelay = 0;
+	int sumKillDelay = 0;
 
+	fout << "Game is:-  ";
+	if (gameStatus == WIN)
+	{
+		fout << "WIN\n";
+	}
+	else if (gameStatus == LOSS)
+	{
+		fout << "LOSS\n";
+	}
+	else if (gameStatus == DRAWN)
+	{
+		fout << "DRAWN\n";
+	}
+
+	fout << "KTS  ID   FD   KD   LT\n";
+	for (int i = 0; i < TotalKills; i++)
+	{
+
+		Q_Killed.dequeue(EnemyPointer);
+
+		//outputting KTS
+		if (EnemyPointer->GetKilledTime() < 10)
+		{
+			fout << EnemyPointer->GetKilledTime() << "    ";
+		}
+		else if (EnemyPointer->GetKilledTime() < 100)
+		{
+			fout << EnemyPointer->GetKilledTime() << "   ";
+		}
+		else if (EnemyPointer->GetKilledTime() < 1000)
+		{
+			fout << EnemyPointer->GetKilledTime() << "  ";
+		}
+
+		//outputting ID
+		if (EnemyPointer->GetID() < 10)
+		{
+			fout << EnemyPointer->GetID() << "    ";
+		}
+		else if (EnemyPointer->GetID() < 100)
+		{
+			fout << EnemyPointer->GetID() << "   ";
+		}
+		else if (EnemyPointer->GetID() < 1000)
+		{
+			fout << EnemyPointer->GetID() << "  ";
+		}
+
+		//outputting FD
+		sumFirstShotDelay += EnemyPointer->getfirstShotTime() - EnemyPointer->GetArrvTime();
+		if (EnemyPointer->getfirstShotTime() - EnemyPointer->GetArrvTime() < 10)
+		{
+			fout << EnemyPointer->getfirstShotTime() - EnemyPointer->GetArrvTime() << "    ";
+		}
+		else if (EnemyPointer->getfirstShotTime() - EnemyPointer->GetArrvTime() < 100)
+		{
+			fout << EnemyPointer->getfirstShotTime() - EnemyPointer->GetArrvTime() << "   ";
+		}
+		else if (EnemyPointer->getfirstShotTime() - EnemyPointer->GetArrvTime() < 1000)
+		{
+			fout << EnemyPointer->getfirstShotTime() - EnemyPointer->GetArrvTime() << "  ";
+		}
+
+		//outputting KD
+		sumKillDelay += EnemyPointer->GetKilledTime() - EnemyPointer->getfirstShotTime();
+		if (EnemyPointer->GetKilledTime() - EnemyPointer->getfirstShotTime() < 10)
+		{
+			fout << EnemyPointer->GetKilledTime() - EnemyPointer->getfirstShotTime() << "    ";
+		}
+		else if (EnemyPointer->GetKilledTime() - EnemyPointer->getfirstShotTime() < 100)
+		{
+			fout << EnemyPointer->GetKilledTime() - EnemyPointer->getfirstShotTime() << "   ";
+		}
+		else if (EnemyPointer->GetKilledTime() - EnemyPointer->getfirstShotTime() < 1000)
+		{
+			fout << EnemyPointer->GetKilledTime() - EnemyPointer->getfirstShotTime() << "  ";
+		}
+
+		//outputting LT
+		if (EnemyPointer->GetKilledTime() - EnemyPointer->GetArrvTime() < 10)
+		{
+			fout << EnemyPointer->GetKilledTime() - EnemyPointer->GetArrvTime() << "    ";
+		}
+		else if (EnemyPointer->GetKilledTime() - EnemyPointer->GetArrvTime() < 100)
+		{
+			fout << EnemyPointer->GetKilledTime() - EnemyPointer->GetArrvTime() << "   ";
+		}
+		else if (EnemyPointer->GetKilledTime() - EnemyPointer->GetArrvTime() < 1000)
+		{
+			fout << EnemyPointer->GetKilledTime() - EnemyPointer->GetArrvTime() << "  ";
+		}
+		fout << endl;
+	}
+
+	fout << BCastle.getTotalDamage() << endl;
+
+	if (gameStatus == WIN)
+	{
+		fout << "Total Enemies = " << TotalKills << endl;
+		fout << "Average First-Shot Delay = " << 1.0 * sumFirstShotDelay / TotalKills << endl;
+		fout << "Average Kill Delay = " << 1.0 * sumKillDelay / TotalKills << endl;
+	}
+	else
+	{
+		fout << "Killed Enemies = " << TotalKills << endl;
+		fout << "Alive Enemies = " << EnemyCount - TotalKills << endl;
+		fout << "Average First-Shot Delay for killed = " << 1.0 * sumFirstShotDelay / TotalKills << endl;
+		fout << "Average Kill Delay for killed = " << 1.0 * sumKillDelay / TotalKills << endl;
+	}
+}
 
 //void Battle::phase1()
 //{
