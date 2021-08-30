@@ -40,7 +40,8 @@ private:
 	PriorityQueue<Fighter*> Q_Fighter;
 	Queue<Freezer*> Q_Freezer;
 	ArrayStack<Healer*> S_Healer;
-
+	Queue<Enemy*> Q_Killed;						//Queue of killed Enemies
+	Queue<Enemy*> Q_Active;
 public:
 	//getters
 	static int GetTimeStep();

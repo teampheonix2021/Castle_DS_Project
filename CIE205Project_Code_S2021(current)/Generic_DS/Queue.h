@@ -58,7 +58,7 @@ public :
 	bool enqueue(const T& newEntry);
 	bool dequeue(T& frntEntry);  
 	bool peekFront(T& frntEntry)  const;
-	
+	int getC();
 	//toArray function to be used ONLY when drawing the queue items
 	const T* toArray(int& count);	//returns array of T (array of items)
 
@@ -157,6 +157,11 @@ bool Queue<T>:: dequeue(T& frntEntry)
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
+template <typename T>
+int Queue<T>::getC()
+{
+	return c;
+}
 
 /*
 Function: peekFront

@@ -52,6 +52,7 @@ void Battle::RunSimulation()
 	
 }
 
+
 bool Battle::ImportEnemies() 
 {
 	ifstream inFile;
