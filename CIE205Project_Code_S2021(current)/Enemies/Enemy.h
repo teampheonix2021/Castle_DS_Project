@@ -26,7 +26,8 @@ protected:
 	 double Speed;
 	 double Power;
 	 double RldPeriod;
-
+	 int killedTime;		//Time at which an Enemy was killed
+	 int firstShotTime = 0;	//Time at which an Enemy was first shot by the castle
 public:
 	Enemy();
 	Enemy(int id,ENMY_TYPE t, int arrTime,double Speed,double Power, double RldPeriod, int d = MaxDistance);
@@ -44,7 +45,7 @@ public:
 	int GetDistance() const;
 
 	int GetArrvTime() const;
-
+	int GetKilledTime();
 
 	// Virtual Functions: ----------------
 

@@ -69,6 +69,10 @@ int Enemy::GetArrvTime() const
 {
 	return ArrvTime;
 }
+int Enemy::GetKilledTime()
+{
+	return killedTime;
+}
 ENMY_TYPE Enemy::GetType() const
 {
 	return Type;

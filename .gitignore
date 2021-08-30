@@ -30,3 +30,6 @@
 *.exe
 *.out
 *.app
+/.vs
+/CIE205Project_Code_S2021(current)/Debug
+/CIE205Project_Code_S2021(current)/.vs/CastleDSProject/v16
