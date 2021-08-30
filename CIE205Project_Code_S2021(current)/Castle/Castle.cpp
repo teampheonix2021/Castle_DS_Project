@@ -28,3 +28,7 @@ double Castle::GetHealth() const
 {
 	return Health;
 }
+bool Castle::IsFrosted() const
+{
+	return frosted;
+}

@@ -47,6 +47,7 @@ void Battle::RunSimulation()
 	
 }
 
+
 bool Battle::ImportEnemies() 
 {
 	ifstream inFile;
@@ -135,7 +136,7 @@ void Battle::phase1()
 	CurrentTimeStep = 0;
 	ImportEnemies();
 	AddAllListsToDrawingList();
-	pGUI->UpdateInterface(CurrentTimeStep);	//upadte interface to show the initial case where all enemies are still inactive
+	pGUI->UpdateInterface(CurrentTimeStep, BCastle.GetHealth(), BCastle.IsFrosted());	//upadte interface to show the initial case where all enemies are still inactive
 	while (KilledCount < EnemyCount)	//as long as some enemies are alive (should be updated in next phases)
 	{
 		CurrentTimeStep++;
@@ -143,9 +144,15 @@ void Battle::phase1()
 		Update();	//Randomly update enemies distance/status (for demo purposes only)
 		pGUI->ResetDrawingList();
 		AddAllListsToDrawingList();
-		pGUI->UpdateInterface(CurrentTimeStep);
+		pGUI->UpdateInterface(CurrentTimeStep, BCastle.GetHealth(), BCastle.IsFrosted(), Q_Killed.getC(),
+			ActiveCount, FrostedCount, ActiveFighter, ActiveFreezer, ActiveHealer,
+			FrostedFighter, FrostedHealer, FrostedFreezer, KilledFighter, KilledFreezers, KilledHealer);
 		pGUI->waitForClick();
 	}
+}
+int Battle::getCurrentTimeStep()
+{
+	return CurrentTimeStep;
 }
 
 void Battle::AddAllListsToDrawingList()
@@ -194,7 +201,7 @@ void Battle::ActivateEnemies()
 	}
 }
 
-void Battle
+//void Battle
 //Randomly update enemies distance/status (for demo purposes)
 //void Battle::Update()	
 //{

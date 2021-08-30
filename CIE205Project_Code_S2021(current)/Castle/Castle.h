@@ -4,7 +4,7 @@ class Castle
 {
 	double Health,Power;
 	int enmyNum;
-
+	bool frosted = false;
 	//
 	// TODO: Add More Data Members As Needed
 	//
@@ -17,6 +17,7 @@ public:
 	void SetPower(double pwr);
 	void SetEnemyNumber(int n);
 	double GetHealth() const;
+	bool IsFrosted() const;
 	
 
 	//
