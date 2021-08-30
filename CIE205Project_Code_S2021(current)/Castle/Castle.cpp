@@ -35,34 +35,28 @@ double Castle::GetHealth() const
 }
 
 
-void Castle::attack(Enemy* enemy)
+bool Castle::attack(Enemy* enemy)
 {
-	if (frosted == true)
-	{
-		return;
-	}
-	else
-	{
-		srand(time(NULL));
-		int icefire = rand() % 100;
-		if (icefire <= 20)
-		{
-			if (enemy->GetStatus() != FRST)
-			{
-				/*if (enemy->gettotalice() >= 5)
-				{
-					enemy->SetStatus(FRST);
-				}
-				else
-				{
-					enemy->settotalice(1);
-				}*/
-				double frost = Power / enemy->GetDistance();
-				enemy->BeFrosted(frost);
-			}
-		}
-		else
-		{
+		//srand(time(NULL));
+		//int icefire = rand() % 100;
+		//if (icefire <= 20)
+		//{
+		//	if (enemy->GetStatus() != FRST)
+		//	{
+		//		/*if (enemy->gettotalice() >= 5)
+		//		{
+		//			enemy->SetStatus(FRST);
+		//		}
+		//		else
+		//		{
+		//			enemy->settotalice(1);
+		//		}*/
+		//		double frost = Power / enemy->GetDistance();
+		//		return enemy->BeFrosted(frost); // returns true if frosted
+		//	}
+		//}
+		//else
+		//{
 			Healer* healer = dynamic_cast<Healer*>(enemy);
 			int K = 0;
 			if (Frozen == true)
@@ -80,8 +74,25 @@ void Castle::attack(Enemy* enemy)
 			}
 			double dmg = Power / (enemy->GetDistance() * K);
 			castletotaldmg += dmg;
-			enemy->BeDamaged(dmg);
+			return enemy->BeDamaged(dmg); //returns true if killed
+		//}
+}
+
+
+bool Castle::freezing(Enemy* enemy)
+{
+	if (enemy->GetStatus() != FRST)
+	{
+		/*if (enemy->gettotalice() >= 5)
+		{
+			enemy->SetStatus(FRST);
 		}
+		else
+		{
+			enemy->settotalice(1);
+		}*/
+		double frost = Power / enemy->GetDistance();
+		return enemy->BeFrosted(frost); // returns true if frosted
 	}
 }
 

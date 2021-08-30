@@ -206,14 +206,14 @@ void Battle::ActivateEnemies()
 
 
 
-void Battle::Battleaction()
+GAME_STATUS Battle::Battleaction()
 {
 	Enemy* activeenemy;
 	Fighter* fighter;
 	Healer* healer;
 	Freezer* freezer;
 	Queue<Enemy*> tmp; //Temporarly Queue have all enemy types
-
+	ActiveCount = Q_Active.getCount();
 	//Filling the other Queues,stacks .. etc depend on the enemy type
 	for (int i = 0; i < ActiveCount; i++)
 	{
@@ -234,9 +234,9 @@ void Battle::Battleaction()
 			{
 				if (fighter->ReduceFrostedTime() == false)
 				{
-					FrostedFighter++;
+					//FrostedFighter++;
 					FrostedCount++;
-					ActiveCount--;
+					//ActiveCount--;
 				}
 				else if (fighter->GetRldTime() == 0)
 				{
@@ -257,9 +257,9 @@ void Battle::Battleaction()
 			{
 				if (freezer->ReduceFrostedTime() == false)
 				{
-					FrostedCount++;
+					//FrostedCount++;
 					FrostedFreezer++;
-					ActiveCount--;
+					//ActiveCount--;
 				}
 				else if (freezer->GetRldTime() == 0)
 				{
@@ -282,9 +282,9 @@ void Battle::Battleaction()
 
 
 	//getting number of activated fighters ..etc
-	int ActiveHealer = S_Healer.getCount();
-	int ActiveFighter = Q_Fighter.size();
-	int ActiveFreezer = Q_Freezer.getCount();
+	 ActiveHealer = S_Healer.getCount();
+	 ActiveFighter = Q_Fighter.size();
+	 ActiveFreezer = Q_Freezer.getCount();
 
 	//looping on the healers and checks if his conditions true or not to heal the others
 	for (int i = 0; i < ActiveHealer; i++)
@@ -295,9 +295,9 @@ void Battle::Battleaction()
 		{
 			if (!healer->ReduceFrostedTime())
 			{
-				FrostedCount++;
+				//FrostedCount++;
 				FrostedHealer++;
-				ActiveCount--;
+				//ActiveCount--;
 			}
 		}
 		else
@@ -318,4 +318,287 @@ void Battle::Battleaction()
 		}
 	}
 
+	int N = BCastle.getnumtoattack();
+	srand(time(NULL));
+	int iceorbullet = (rand() % 100) + 1; //probability for attacking with bullet or ice by castle
+	//attacking with bullets
+	if (iceorbullet > 20)
+	{
+		if (ActiveFighter >= N)
+		{
+			for (int i = 0; i < N; i++)
+			{
+				if (Q_Fighter.size() == 0)
+				{
+					break;
+				}
+				Q_Fighter.dequeueMax(fighter);
+				if (BCastle.attack(fighter) == true)
+				{
+					if (fighter->GetStatus() == FRST)
+					{
+						FrostedFighter--;
+					}
+					Q_Killed.enqueue(fighter);
+					KilledFighter++;
+				}
+			}
+		}
+		else if (ActiveFighter < N)
+		{
+			for (int i = 0; i < N - ActiveFighter; i++)
+			{
+				if (S_Healer.getCount() == 0)
+				{
+					break;
+				}
+				S_Healer.pop(healer);
+				if (BCastle.attack(healer) == true)
+				{
+					if (healer->GetStatus() == FRST)
+					{
+						FrostedHealer--;
+					}
+					Q_Killed.enqueue(healer);
+					BCastle.usehealertools(healer);
+					KilledHealer++;
+				}
+			}
+		}
+		else if (ActiveFighter + ActiveHealer < N)
+		{
+			for (int i = 0; i < N- (ActiveFighter + ActiveHealer); i++)
+			{
+				if (Q_Freezer.getCount() == 0)
+				{
+					break;
+				}
+				Q_Freezer.dequeue(freezer);
+				if (BCastle.attack(freezer) == true)
+				{
+					if (freezer->GetStatus() == FRST)
+					{
+						FrostedFreezer--;
+					}
+					Q_Killed.enqueue(freezer);
+					KilledFreezer++;
+				}
+			}
+		}
+		else
+		{
+			for (int i = 0; i < N; i++)
+			{
+				if (Q_Fighter.size() == 0)
+				{
+					break;
+				}
+				Q_Fighter.dequeueMax(fighter);
+				if (BCastle.attack(fighter) == true)
+				{
+					if (fighter->GetStatus() == FRST)
+					{
+						FrostedFighter--;
+					}
+					Q_Killed.enqueue(fighter);
+					KilledFighter++;
+				}
+			}
+			
+			if (ActiveFighter < N)
+			{
+				for (int i = 0; i < N - ActiveFighter; i++)
+				{
+					if (S_Healer.getCount() == 0)
+					{
+						break;
+					}
+					S_Healer.pop(healer);
+					if (BCastle.attack(healer) == true)
+					{
+						if (healer->GetStatus() == FRST)
+						{
+							FrostedHealer--;
+						}
+						Q_Killed.enqueue(healer);
+						BCastle.usehealertools(healer);
+						KilledHealer++;
+					}
+				}
+			}
+			if (ActiveFighter + ActiveHealer < N)
+			{
+				for (int i = 0; i < N - (ActiveFighter + ActiveHealer); i++)
+				{
+					if (Q_Freezer.getCount() == 0)
+					{
+						break;
+					}
+					Q_Freezer.dequeue(freezer);
+					if (BCastle.attack(freezer) == true)
+					{
+						if (freezer->GetStatus() == FRST)
+						{
+							FrostedFreezer--;
+						}
+						Q_Killed.enqueue(freezer);
+						KilledFreezer++;
+					}
+				}
+			}
+		}
+	}
+	//attacking with ice
+	else if (iceorbullet <= 20)
+	{
+		//freezing the fighter
+		if (ActiveFighter >= N)
+		{
+			for (int i = 0; i < N; i++)
+			{
+				if (Q_Fighter.size() == 0)
+				{
+					break;
+				}
+				Q_Fighter.dequeueMax(fighter);
+				if (fighter->IsFrosted() == false)
+				{
+					if (BCastle.freezing(fighter) == true)
+					{
+						FrostedFighter++;
+					}
+				}
+			}
+		}
+		//freezing the healer
+		else if (ActiveFighter < N)
+		{
+			for (int i = 0; i < N - ActiveFighter; i++)
+			{
+				if (S_Healer.getCount() == 0)
+				{
+					break;
+				}
+				S_Healer.pop(healer);
+				if (healer->IsFrosted() == false)
+				{
+					if (BCastle.freezing(healer) == true)
+					{
+						FrostedHealer++;
+					}
+				}
+			}
+		}
+		//freezing the freezers
+		else if (ActiveFighter + ActiveHealer < N)
+		{
+			for (int i = 0; i < N - (ActiveFighter + ActiveHealer); i++)
+			{
+				if (Q_Freezer.getCount() == 0)
+				{
+					break;
+				}
+				Q_Freezer.dequeue(freezer);
+				if (freezer->IsFrosted() == false)
+				{
+					if (BCastle.freezing(freezer) == true)
+					{
+						FrostedFreezer++;
+					}
+				}
+			}
+		}
+		else
+		{
+			for (int i = 0; i < N; i++)
+			{
+				if (Q_Fighter.size() == 0)
+				{
+					break;
+				}
+				Q_Fighter.dequeueMax(fighter);
+				if (fighter->IsFrosted() == false)
+				{
+					if (BCastle.freezing(fighter) == true)
+					{
+						FrostedFighter++;
+					}
+				}
+			}
+
+			if (ActiveFighter < N)
+			{
+				for (int i = 0; i < N - ActiveFighter; i++)
+				{
+					if (S_Healer.getCount() == 0)
+					{
+						break;
+					}
+					S_Healer.pop(healer);
+					if (healer->IsFrosted() == false)
+					{
+						if (BCastle.freezing(healer) == true)
+						{
+							FrostedHealer++;
+						}
+					}
+				}
+			}
+			//freezing the freezers
+			if (ActiveFighter + ActiveHealer < N)
+			{
+				for (int i = 0; i < N - (ActiveFighter + ActiveHealer); i++)
+				{
+					if (Q_Freezer.getCount() == 0)
+					{
+						break;
+					}
+					Q_Freezer.dequeue(freezer);
+					if (freezer->IsFrosted() == false)
+					{
+						if (BCastle.freezing(freezer) == true)
+						{
+							FrostedFreezer++;
+						}
+					}
+				}
+			}
+		}
+	}
+	ActiveFighter = ActiveFighter - FrostedFighter - KilledFighter;
+	ActiveHealer = ActiveHealer - FrostedHealer - KilledHealer;
+	ActiveFreezer = ActiveFreezer - FrostedFreezer - KilledFreezer;
+
+	/*for (int i = 0; i < ActiveCount; i++)
+	{
+		Q_Active.dequeue(activeenemy);
+		if (!activeenemy->IsDead())
+		{
+			Q_Active.enqueue(activeenemy);
+		}
+		else
+		{
+			Q_Killed.enqueue(activeenemy);
+		}
+	}*/
+
+	//checks the game status
+	if (BCastle.GetHealth() == 0 && EnemyCount == Q_Killed.getCount())
+	{
+		return DRAWN;
+	}
+
+	else if (BCastle.GetHealth() == 0)
+	{
+		return LOSS;
+	}
+
+	else if (EnemyCount == Q_Killed.getCount())
+	{
+		return WIN;
+	}
+	else
+	{
+		return IN_PROGRESS;
+	}
 }

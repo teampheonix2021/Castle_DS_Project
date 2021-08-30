@@ -6,6 +6,7 @@
 #include "Generic_DS/PriorityQueue.h"
 #include "Generic_DS/ArrayStack.h"
 #include "GUI\GUI.h"
+#include <time.h>
 
 // it is the controller of the project
 class Battle
@@ -24,6 +25,7 @@ private:
 
 	int FrostedFighter = 0, FrostedHealer = 0, FrostedFreezer = 0;
 	int KilledFighter = 0, KilledHealer = 0, KilledFreezer = 0;
+	int ActiveHealer = 0, ActiveFighter =0, ActiveFreezer = 0;
 	//Enemy * BEnemiesForDraw[MaxEnemyCount]; // This Array of Pointers is used for drawing elements in the GUI
 								  			// No matter what list type you are using to hold enemies, 
 											// you must pass the enemies to the GUI function as an array of enemy pointers. 
@@ -49,7 +51,7 @@ public:
 	void ActivateEnemies();		//check the inactive list and activate all enemies that has arrived
 	bool ImportEnemies();		//Import enemies from a text file
 	void Execute();
-	void Battleaction();
+	GAME_STATUS Battleaction();
 
 	//void phase1();
 	//void Update();

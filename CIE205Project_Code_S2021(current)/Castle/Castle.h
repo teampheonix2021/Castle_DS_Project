@@ -39,7 +39,8 @@ public:
 	// TODO: Add More Member Functions As Needed
 	//
 
-	void attack(Enemy* enemy);
+	bool attack(Enemy* enemy);
+	bool freezing(Enemy* enemy);
 	void usehealertools(Enemy* enemy);
 	bool isfrosted();
 	void Bedamaged(double dmg); // damage taken by fighters
