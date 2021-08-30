@@ -48,6 +48,6 @@ void Fighter::AttackCastle(Castle* castle)
 
 	//TO-DO modifications in case of Super Solider
 	double damage = (x * Power) / Distance;
-	castle->BeDamaged(damage);
+	castle->Bedamaged(damage);
 }
 

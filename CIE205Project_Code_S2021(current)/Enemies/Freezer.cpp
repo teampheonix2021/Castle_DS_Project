@@ -35,5 +35,5 @@ void Freezer::FreezeCastle(Castle* castle)
 		k = 1.0;
 
 	double frost = (k * pow(Power, 2)) / Distance; //CHECK
-	castle->BeFrosted(frost);
+	castle->Befrosted(frost);
 }

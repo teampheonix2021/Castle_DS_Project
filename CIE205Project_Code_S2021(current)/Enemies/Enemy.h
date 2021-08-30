@@ -32,6 +32,7 @@ protected:
 	 int KilledTime; //Time of killing
 	 int RldPeriod;
 	 int EndReload;
+	 int totalice = 0;
 public:
 	//Enemy();
 	Enemy(int id, double health,ENMY_TYPE type, int arrTime,double Speed,double Power, double RldPeriod, int d = MaxDistance);
@@ -67,6 +68,9 @@ public:
 	bool ReduceFrostedTime();
 	void Melt();
 	
+
+	void settotalice(int x);
+	int gettotalice();
 
 
 	// Virtual Functions: ----------------

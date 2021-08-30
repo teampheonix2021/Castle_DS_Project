@@ -91,23 +91,23 @@ void Enemy::setRldTime()
 	EndReload = RldPeriod;
 }
 
-bool Enemy::BeFrosted(double Frost)
-{
-	if (FirstShot == 0)
-		FirstShot = Battle::GetTimeStep();
-	
-	else if (CurrentFrost + Frost >= FrostThreshold)
-	{
-		CurrentFrost = 0;
-		SetStatus(FRST);
-		return true; //Frosted Enemy
-	}
-	else
-	{
-		CurrentFrost += Frost;
-		return false; //Still not frosted
-	}
-}
+//bool Enemy::BeFrosted(double Frost)
+//{
+//	if (FirstShot == 0)
+//		FirstShot = Battle::GetTimeStep();
+//	
+//	else if (CurrentFrost + Frost >= FrostThreshold)
+//	{
+//		CurrentFrost = 0;
+//		SetStatus(FRST);
+//		return true; //Frosted Enemy
+//	}
+//	else
+//	{
+//		CurrentFrost += Frost;
+//		return false; //Still not frosted
+//	}
+//}
 
 bool Enemy::BeDamaged(double Damage)
 {
@@ -197,4 +197,15 @@ int Enemy::GetArrvTime() const
 ENMY_TYPE Enemy::GetType() const
 {
 	return Type;
+}
+
+
+void Enemy::settotalice(int x)
+{
+	totalice += x;
+}
+
+int Enemy::gettotalice()
+{
+	return totalice;
 }
