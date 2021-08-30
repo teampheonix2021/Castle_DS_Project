@@ -28,3 +28,23 @@ double Castle::GetHealth() const
 {
 	return Health;
 }
+
+//void Castle::BeFrosted(double frost)
+//{
+//	frostLevel += frost;
+//	if (frostLevel >= totalIce) 
+//	{
+//		frostLevel = 0;
+//		frosted = true;
+//	}
+//}
+
+//void Castle::BeDamaged(double damage)
+//{
+//	totalDamage += damage;
+//	Health -= damage;
+//	if (Health <= 0)
+//	{
+//		Health = 0;
+//	}
+//}

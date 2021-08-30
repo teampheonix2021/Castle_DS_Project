@@ -17,6 +17,8 @@ public:
 	void SetPower(double pwr);
 	void SetEnemyNumber(int n);
 	double GetHealth() const;
+	void BeFrosted(double frost);
+	void BeDamaged(double damage);
 	
 
 	//
