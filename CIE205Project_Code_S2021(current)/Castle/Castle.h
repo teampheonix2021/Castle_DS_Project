@@ -45,5 +45,6 @@ public:
 	void Bedamaged(double dmg); // damage taken by fighters
 	void Befrosted(double dmg); // dmg taken by freezers
 	bool getkilled();
+	int getnumtoattack();
 };
 

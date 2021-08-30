@@ -49,14 +49,16 @@ void Castle::attack(Enemy* enemy)
 		{
 			if (enemy->GetStatus() != FRST)
 			{
-				if (enemy->gettotalice() >= 5)
+				/*if (enemy->gettotalice() >= 5)
 				{
 					enemy->SetStatus(FRST);
 				}
 				else
 				{
 					enemy->settotalice(1);
-				}
+				}*/
+				double frost = Power / enemy->GetDistance();
+				enemy->BeFrosted(frost);
 			}
 		}
 		else
@@ -132,4 +134,9 @@ void Castle::Befrosted(double dmg)
 		totalfrosttaken = 0;
 		frosted = true;;
 	}
+}
+
+int Castle::getnumtoattack()
+{
+	return enmyNum;
 }

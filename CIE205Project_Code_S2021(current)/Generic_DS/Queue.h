@@ -51,6 +51,7 @@ private :
 	
 	Node<T>* backPtr;
 	Node<T>* frontPtr;
+	int count = 0;
 public :
 	Queue();	
 	bool isEmpty() const ;
@@ -61,6 +62,8 @@ public :
 	//toArray function to be used ONLY when drawing the queue items
 	const T* toArray(int& count);	//returns array of T (array of items)
 
+
+	int getCount();
 
 	~Queue();
 };
@@ -116,6 +119,8 @@ bool Queue<T>::enqueue( const T& newEntry)
 	else
 		backPtr->setNext(newNodePtr); // The queue was not empty
 	backPtr = newNodePtr; // New node is at back
+
+	count++;
 	return true ;
 } // end enqueue
 
@@ -146,7 +151,7 @@ bool Queue<T>:: dequeue(T& frntEntry)
 	// Free memory reserved by the dequeued node
 	delete nodeToDeletePtr;
 
-
+	count--;
 	return true;
 
 }
@@ -221,6 +226,11 @@ const T* Queue<T>::toArray(int& count)
 	//IMPORTANT:
 	//toArray function to be used ONLY when drawing the queue items
 
+
+	int getCount()
+	{
+		return count;
+	}
 }
 
 #endif

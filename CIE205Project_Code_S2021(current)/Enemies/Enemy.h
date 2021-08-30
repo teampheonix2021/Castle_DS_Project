@@ -32,7 +32,7 @@ protected:
 	 int KilledTime; //Time of killing
 	 int RldPeriod;
 	 int EndReload;
-	 int totalice = 0;
+	 //int totalice = 0;
 public:
 	//Enemy();
 	Enemy(int id, double health,ENMY_TYPE type, int arrTime,double Speed,double Power, double RldPeriod, int d = MaxDistance);
@@ -67,10 +67,11 @@ public:
 	void DecrementDist();
 	bool ReduceFrostedTime();
 	void Melt();
+	void Reducereloadtime(); //reduce the time to end reloading;
 	
 
-	void settotalice(int x);
-	int gettotalice();
+	/*void settotalice(int x);
+	int gettotalice();*/
 
 
 	// Virtual Functions: ----------------
@@ -79,4 +80,3 @@ public:
 	//virtual void Act() = 0;	//Acting means fighting or healing
 
 };
-
